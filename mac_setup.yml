@@ -1,0 +1,50 @@
+---
+- name: Setup New Mac Environment
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    dotfiles_dir: "{{ lookup('env','HOME') }}/dotfiles"
+
+  tasks:
+    - name: Install Xcode Command Line Tools
+      command: xcode-select --install
+      ignore_errors: yes
+
+    - name: Install Homebrew
+      shell: |
+        which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    - name: Install Homebrew packages from Brewfile
+      shell: brew bundle --file={{ dotfiles_dir }}/Brewfile
+      environment:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+
+    - name: Install Mac App Store apps
+      shell: |
+        while read line; do
+          mas install $(echo $line | awk '{print $1}')
+        done < {{ dotfiles_dir }}/mas_apps.txt
+
+    - name: Copy Zsh config
+      copy:
+        src: "{{ dotfiles_dir }}/zshrc"
+        dest: "~/.zshrc"
+        backup: yes
+
+    - name: Copy Oh My Zsh
+      copy:
+        src: "{{ dotfiles_dir }}/oh-my-zsh"
+        dest: "~/.oh-my-zsh"
+        remote_src: yes
+
+    - name: Copy Starship config
+      copy:
+        src: "{{ dotfiles_dir }}/starship.toml"
+        dest: "~/.config/starship.toml"
+        backup: yes
+
+    - name: Import keyboard shortcuts
+      shell: |
+        defaults import com.apple.symbolichotkeys {{ dotfiles_dir }}/symbolichotkeys.plist
