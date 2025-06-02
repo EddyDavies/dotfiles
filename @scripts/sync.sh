@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTFILES_DIR=~/code/dotfiles
+DOTFILES_DIR=$HOME/dotfiles
 
 # Brew
 brew bundle dump --file=$DOTFILES_DIR/Brewfile --describe --force
@@ -23,4 +23,4 @@ cp ~/.gitconfig $DOTFILES_DIR/gitconfig
 mkdir -p $DOTFILES_DIR/vscode-settings
 cp -r ~/Library/Application\ Support/Code/User/* $DOTFILES_DIR/vscode-settings/
 
-echo "✅ Dotfiles synced!"
+echo "✅ Dotfiles synced!" 

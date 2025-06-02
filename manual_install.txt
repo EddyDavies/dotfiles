@@ -1,0 +1,26 @@
+# Manual Installation Required
+
+The following apps need to be installed manually as they are not available through Homebrew or automated download:
+
+## Mac App Store Apps
+- Numbers.app (409203825)
+- one sec.app (1532875441)
+
+## Third-party Apps (Download from official websites)
+- Blackmagic Proxy Generator Lite.app - https://www.blackmagicdesign.com/
+- Blackmagic RAW - https://www.blackmagicdesign.com/
+- Blitzit.app - https://blitzit.app/
+- Cluely.app - https://cluely.com/
+- DaVinci Resolve - https://www.blackmagicdesign.com/products/davinciresolve
+- FlutterFlow.app - https://flutterflow.io/
+- Lex.app - https://lex.page/
+- Pally.app - https://pally.app/
+- Superpowered.app - https://superpowered.me/
+- Typora.app - https://typora.io/
+- Vy.app - https://vy.app/
+
+## Notes
+- Some Google apps can be installed as Chrome PWAs (Progressive Web Apps)
+- Microsoft Office apps are included in the Office suite download
+- PaperCut client should be provided by your organization's IT department
+- Consider checking if any of these apps have Homebrew cask alternatives with different names 
