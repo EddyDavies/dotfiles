@@ -39,19 +39,10 @@
         dest: "~/.config/starship.toml"
         backup: yes
 
-    - name: Create Raycast config directory
-      file:
-        path: "~/Library/Application Support/com.raycast.macos"
-        state: directory
-
     - name: Restore Raycast configuration
       shell: |
         if [ -d "{{ dotfiles_dir }}/raycast" ]; then
-          rsync -av --exclude='cache/' --exclude='logs/' --exclude='tmp/' --exclude='*.log' \
-                --exclude='node_modules/' --exclude='extensions/*/node_modules/' \
-                --exclude='extensions/*/.git/' --exclude='extensions/*/dist/' \
-                --exclude='extensions/*/.cache/' --exclude='quicklink-cache.json' \
-                --exclude='raycast.db-*' --exclude='*.sqlite-*' \
+          rsync -av --exclude='*.log' --exclude='cache/' --exclude='tmp/' \
                 "{{ dotfiles_dir }}/raycast/" \
                 "~/Library/Application Support/com.raycast.macos/"
         fi
