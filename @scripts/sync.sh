@@ -10,7 +10,8 @@ mas list > $DOTFILES_DIR/mas_apps.txt
 
 # Zsh
 cp ~/.zshrc $DOTFILES_DIR/zshrc
-cp -r ~/.oh-my-zsh $DOTFILES_DIR/oh-my-zsh
+# Use our clean oh-my-zsh backup script instead of copying everything
+$DOTFILES_DIR/@scripts/backup_oh_my_zsh.sh
 cp ~/.config/starship.toml $DOTFILES_DIR/.config/starship.toml
 
 # Keyboard shortcuts

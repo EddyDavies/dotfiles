@@ -28,10 +28,12 @@
         backup: yes
 
     - name: Copy Oh My Zsh
-      copy:
-        src: "{{ dotfiles_dir }}/oh-my-zsh"
-        dest: "~/.oh-my-zsh"
-        remote_src: yes
+      shell: |
+        if [ -d "{{ dotfiles_dir }}/oh-my-zsh" ]; then
+          rsync -av --exclude='.DS_Store' \
+                "{{ dotfiles_dir }}/oh-my-zsh/" \
+                "~/.oh-my-zsh/"
+        fi
 
     - name: Copy Starship config
       copy:
