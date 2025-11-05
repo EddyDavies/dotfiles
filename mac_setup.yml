@@ -21,6 +21,12 @@
       environment:
         HOMEBREW_NO_AUTO_UPDATE: 1
 
+    - name: Configure git user.name
+      command: git config --global user.name "eddydavies"
+
+    - name: Configure git user.email
+      command: git config --global user.email "eddy@fortick.io"
+
     - name: Copy Zsh config
       copy:
         src: "{{ dotfiles_dir }}/zshrc"
