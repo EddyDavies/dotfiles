@@ -27,19 +27,31 @@
     - name: Configure git user.email
       command: git config --global user.email "eddy@fortick.io"
 
-    - name: Copy Zsh config
-      copy:
-        src: "{{ dotfiles_dir }}/zshrc"
-        dest: "~/.zshrc"
-        backup: yes
+    - name: Install Oh My Zsh
+      shell: |
+        if [ ! -d "$HOME/.oh-my-zsh" ]; then
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        fi
 
-    - name: Copy Oh My Zsh
+    - name: Copy Oh My Zsh customizations
       shell: |
         if [ -d "{{ dotfiles_dir }}/oh-my-zsh" ]; then
           rsync -av --exclude='.DS_Store' \
                 "{{ dotfiles_dir }}/oh-my-zsh/" \
                 "~/.oh-my-zsh/"
         fi
+
+    - name: Copy Zsh config
+      copy:
+        src: "{{ dotfiles_dir }}/zshrc"
+        dest: "~/.zshrc"
+        backup: yes
+
+    - name: Ensure ~/.config directory exists
+      file:
+        path: "~/.config"
+        state: directory
+        mode: '0755'
 
     - name: Copy Starship config
       copy:
