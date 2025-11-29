@@ -29,14 +29,6 @@
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         fi
 
-    - name: Copy Oh My Zsh customizations
-      shell: |
-        if [ -d "{{ dotfiles_dir }}/oh-my-zsh" ]; then
-          rsync -av --exclude='.DS_Store' \
-                "{{ dotfiles_dir }}/oh-my-zsh/" \
-                "~/.oh-my-zsh/"
-        fi
-
     - name: Copy Zsh config
       copy:
         src: "{{ dotfiles_dir }}/zshrc"
@@ -85,28 +77,10 @@
         dest: "~/Downloads/manual_apps/ZoomInstaller.pkg"
         mode: '0644'
 
-    - name: Download uTorrent Web
-      get_url:
-        url: "https://download-new.utorrent.com/endpoint/utorrent/os/mac"
-        dest: "~/Downloads/manual_apps/uTorrent_Web.dmg"
-        mode: '0644'
-
-    - name: Download Zen Browser
-      get_url:
-        url: "https://github.com/zen-browser/desktop/releases/latest/download/zen.macos-universal.dmg"
-        dest: "~/Downloads/manual_apps/zen.macos-universal.dmg"
-        mode: '0644'
-
     - name: Download Pinokio
       get_url:
         url: "https://github.com/pinokiocomputer/pinokio/releases/latest/download/Pinokio-darwin-arm64.zip"
         dest: "~/Downloads/manual_apps/Pinokio-darwin-arm64.zip"
-        mode: '0644'
-
-    - name: Download folk
-      get_url:
-        url: "https://folk.computer/download/mac"
-        dest: "~/Downloads/manual_apps/folk.dmg"
         mode: '0644'
 
     - name: Display manual installation message

@@ -1,0 +1,213 @@
+---
+- name: complete macOS setup
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    # replace with your keyboard vendor-product ID:
+    # Run this to discover the right value:
+    #   defaults -currentHost read -g | grep modifiermapping
+    keyboard_vid_pid: "1452-579"
+
+    brew_bin: "/opt/homebrew/bin/brew"
+    dock_tile_size: 36
+    dock_large_size: 128
+
+  tasks:
+    ####################################################################
+    # KEYBOARD MODIFIERS
+    ####################################################################
+    - name: caps lock -> no action
+      community.general.osx_defaults:
+        host: currentHost
+        domain: -g
+        key: "com.apple.keyboard.modifiermapping.{{ keyboard_vid_pid }}-0"
+        type: array
+        value:
+          - HIDKeyboardModifierMappingSrc: 0
+            HIDKeyboardModifierMappingDst: -1
+
+    ####################################################################
+    # FN KEY — disable dictation only
+    ####################################################################
+    - name: disable dictation triggered by fn key
+      community.general.osx_defaults:
+        domain: com.apple.HIToolbox
+        key: AppleDictationAutoEnable
+        type: int
+        value: 0
+
+    ####################################################################
+    # DISABLE SPOTLIGHT (CMD + SPACE)
+    ####################################################################
+    - name: disable spotlight cmd+space
+      ansible.builtin.command:
+        argv:
+          - defaults
+          - write
+          - com.apple.symbolichotkeys
+          - AppleSymbolicHotKeys
+          - -dict-add
+          - "64"
+          - >-
+            <dict>
+              <key>enabled</key><false/>
+              <key>value</key>
+              <dict>
+                <key>type</key><string>standard</string>
+                <key>parameters</key>
+                <array>
+                  <integer>32</integer>
+                  <integer>49</integer>
+                  <integer>1048576</integer>
+                </array>
+              </dict>
+            </dict>
+
+    - name: apply keyboard shortcut changes immediately
+      ansible.builtin.command: >
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
+    ####################################################################
+    # DOCK BEHAVIOUR
+    ####################################################################
+    - name: dock autohide
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: autohide
+        type: bool
+        value: true
+
+    - name: dock magnification
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: magnification
+        type: bool
+        value: true
+
+    - name: dock base icon size
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: tilesize
+        type: int
+        value: "{{ dock_tile_size }}"
+
+    - name: dock magnified icon size
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: largesize
+        type: int
+        value: "{{ dock_large_size }}"
+
+    - name: use scale minimise effect
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: mineffect
+        type: string
+        value: scale
+
+    ####################################################################
+    # DOCK CONTENTS — only Finder, Notes, Messages
+    ####################################################################
+    - name: set dock items (finder, notes, messages)
+      ansible.builtin.shell: |
+        dock_item () {
+          printf '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>%s</string><key>_CFURLStringType</key><integer>0</integer></dict></dict><key>tile-type</key><string>file-tile</string></dict>' "$1"
+        }
+
+        defaults delete com.apple.dock persistent-apps 2>/dev/null || true
+
+        finder=$(dock_item "/System/Library/CoreServices/Finder.app")
+        notes=$(dock_item "/System/Applications/Notes.app")
+        messages=$(dock_item "/System/Applications/Messages.app")
+
+        defaults write com.apple.dock persistent-apps -array "$finder" "$notes" "$messages"
+      args:
+        executable: /bin/bash
+
+    ####################################################################
+    # HOT CORNERS — disable all
+    ####################################################################
+    - name: disable bottom-right hot corner
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: wvous-br-corner
+        type: int
+        value: 0
+
+    ####################################################################
+    # APP EXPOSÉ gesture — three-finger swipe down
+    ####################################################################
+    - name: enable app exposé three-finger gesture
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: showAppExposeGestureEnabled
+        type: bool
+        value: true
+
+    ####################################################################
+    # FINDER TOOLBAR — include delete/trash icon
+    ####################################################################
+    - name: add trash/delete icon to finder toolbar
+      ansible.builtin.command: >
+        defaults write com.apple.finder 'NSToolbar Configuration Browser'
+        '{ "TB Display Mode" = 2;
+           "TB Icon Size Mode" = 1;
+           "TB Is Shown" = 1;
+           "TB Item Identifiers" = (
+              "com.apple.finder.BACK",
+              NSToolbarFlexibleSpaceItem,
+              "com.apple.finder.SWCH",
+              NSToolbarSpaceItem,
+              "com.apple.finder.QUIK",
+              "com.apple.finder.ACTN",
+              NSToolbarFlexibleSpaceItem,
+              "com.apple.finder.INFO",
+              "com.apple.finder.TRSH",
+              "com.apple.finder.NFLD",
+              "com.apple.finder.BURN",
+              "com.apple.finder.EJCT",
+              NSToolbarFlexibleSpaceItem,
+              "com.apple.finder.SRCH"
+           );
+           "TB Size Mode" = 1;
+           "TB Visibility Priority Values" = { };
+        }'
+
+    ####################################################################
+    # ~/code folder + pin to Finder sidebar
+    ####################################################################
+    - name: ensure ~/code exists
+      ansible.builtin.file:
+        path: "{{ lookup('env','HOME') }}/code"
+        state: directory
+        mode: "0755"
+
+    - name: ensure mysides is installed
+      ansible.builtin.command: "{{ brew_bin }} install mysides"
+      args:
+        creates: "/opt/homebrew/bin/mysides"
+
+    - name: pin ~/code to finder sidebar
+      ansible.builtin.shell: |
+        PATH="/opt/homebrew/bin:$PATH"
+        TARGET_URL="file://{{ lookup('env','HOME') }}/code"
+
+        if mysides list | grep -F "$TARGET_URL" >/dev/null 2>&1; then
+          exit 0
+        fi
+
+        mysides add code "$TARGET_URL"
+      args:
+        executable: /bin/bash
+
+    ####################################################################
+    # RESTART FINDER & DOCK
+    ####################################################################
+    - name: restart finder
+      ansible.builtin.command: killall Finder
+      ignore_errors: true
+
+    - name: restart dock
+      ansible.builtin.command: killall Dock
+      ignore_errors: true
