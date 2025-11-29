@@ -8,10 +8,6 @@
     dotfiles_dir: "{{ lookup('env','HOME') }}/dotfiles"
 
   tasks:
-    - name: Install Xcode Command Line Tools
-      command: xcode-select --install
-      ignore_errors: yes
-
     - name: Install Homebrew
       shell: |
         which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
