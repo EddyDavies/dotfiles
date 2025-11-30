@@ -15,19 +15,6 @@
 
   tasks:
     ####################################################################
-    # KEYBOARD MODIFIERS
-    ####################################################################
-    - name: caps lock -> no action
-      community.general.osx_defaults:
-        host: currentHost
-        domain: -g
-        key: "com.apple.keyboard.modifiermapping.{{ keyboard_vid_pid }}-0"
-        type: array
-        value:
-          - HIDKeyboardModifierMappingSrc: 0
-            HIDKeyboardModifierMappingDst: -1
-
-    ####################################################################
     # FN KEY — disable dictation only
     ####################################################################
     - name: disable dictation triggered by fn key
@@ -107,9 +94,9 @@
         value: scale
 
     ####################################################################
-    # DOCK CONTENTS — only Finder, Notes, Messages
+    # DOCK CONTENTS — Notes, Messages (Finder is always there by default)
     ####################################################################
-    - name: set dock items (finder, notes, messages)
+    - name: set dock items (notes, messages)
       ansible.builtin.shell: |
         dock_item () {
           printf '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>%s</string><key>_CFURLStringType</key><integer>0</integer></dict></dict><key>tile-type</key><string>file-tile</string></dict>' "$1"
@@ -117,11 +104,10 @@
 
         defaults delete com.apple.dock persistent-apps 2>/dev/null || true
 
-        finder=$(dock_item "/System/Library/CoreServices/Finder.app")
         notes=$(dock_item "/System/Applications/Notes.app")
         messages=$(dock_item "/System/Applications/Messages.app")
 
-        defaults write com.apple.dock persistent-apps -array "$finder" "$notes" "$messages"
+        defaults write com.apple.dock persistent-apps -array "$notes" "$messages"
       args:
         executable: /bin/bash
 
@@ -136,7 +122,7 @@
         value: 0
 
     ####################################################################
-    # APP EXPOSÉ gesture — three-finger swipe down
+    # MISSION CONTROL — app exposé gesture
     ####################################################################
     - name: enable app exposé three-finger gesture
       community.general.osx_defaults:
@@ -175,31 +161,13 @@
         }'
 
     ####################################################################
-    # ~/code folder + pin to Finder sidebar
+    # ~/code folder
     ####################################################################
     - name: ensure ~/code exists
       ansible.builtin.file:
         path: "{{ lookup('env','HOME') }}/code"
         state: directory
         mode: "0755"
-
-    - name: ensure mysides is installed
-      ansible.builtin.command: "{{ brew_bin }} install mysides"
-      args:
-        creates: "/opt/homebrew/bin/mysides"
-
-    - name: pin ~/code to finder sidebar
-      ansible.builtin.shell: |
-        PATH="/opt/homebrew/bin:$PATH"
-        TARGET_URL="file://{{ lookup('env','HOME') }}/code"
-
-        if mysides list | grep -F "$TARGET_URL" >/dev/null 2>&1; then
-          exit 0
-        fi
-
-        mysides add code "$TARGET_URL"
-      args:
-        executable: /bin/bash
 
     ####################################################################
     # RESTART FINDER & DOCK

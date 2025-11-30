@@ -153,7 +153,6 @@ esac
 # Shell completions
 autoload -U compinit && compinit
 autoload -U bashcompinit && bashcompinit
-eval "$(register-python-argcomplete ggrab)"
 
 # AWS CLI completions
 complete -C "$(which aws_completer)" aws

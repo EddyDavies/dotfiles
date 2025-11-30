@@ -83,6 +83,18 @@
         dest: "~/Downloads/manual_apps/Pinokio-darwin-arm64.zip"
         mode: '0644'
 
+    - name: Download Willow
+      get_url:
+        url: "https://willow-mac-download.s3.amazonaws.com/latest/Willow.Installer.dmg"
+        dest: "~/Downloads/manual_apps/Willow.Installer.dmg"
+        mode: '0644'
+
+    - name: Download ChatGPT
+      get_url:
+        url: "https://persistent.oaistatic.com/sidekick/public/ChatGPT_Desktop_public_latest.dmg"
+        dest: "~/Downloads/manual_apps/ChatGPT_Desktop_public_latest.dmg"
+        mode: '0644'
+
     - name: Display manual installation message
       debug:
         msg: |
@@ -93,6 +105,8 @@
           - uTorrent Web (.dmg)
           - Zen Browser (.dmg)
           - Pinokio (.zip)
+          - Willow (.dmg)
+          - ChatGPT (.dmg)
           - folk (.dmg)
           
           See manual_install.txt for other apps that need manual installation.
