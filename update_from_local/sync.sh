@@ -3,25 +3,23 @@
 DOTFILES_DIR=$HOME/dotfiles
 
 # Brew
-brew bundle dump --file=$DOTFILES_DIR/Brewfile --describe --force
-
-# MAS
-mas list > $DOTFILES_DIR/mas_apps.txt
+brew bundle dump --file=$DOTFILES_DIR/configs/Brewfile --describe --force
 
 # Zsh
-cp ~/.zshrc $DOTFILES_DIR/zshrc
-# Use our clean oh-my-zsh backup script instead of copying everything
-$DOTFILES_DIR/@scripts/backup_oh_my_zsh.sh
-cp ~/.config/starship.toml $DOTFILES_DIR/.config/starship.toml
+cp ~/.zshrc $DOTFILES_DIR/configs/zshrc
+# Strip secrets/tokens from the stored zshrc
+sed -i '' '/CLAUDE_CODE_OAUTH_TOKEN/d' $DOTFILES_DIR/configs/zshrc
+sed -i '' '/sk-ant-/d' $DOTFILES_DIR/configs/zshrc
+cp ~/.config/starship.toml $DOTFILES_DIR/configs/starship.toml
 
 # Keyboard shortcuts
-defaults export com.apple.symbolichotkeys $DOTFILES_DIR/symbolichotkeys.plist
+defaults export com.apple.symbolichotkeys $DOTFILES_DIR/configs/symbolichotkeys.plist
 
 # Git config
-cp ~/.gitconfig $DOTFILES_DIR/gitconfig
+cp ~/.gitconfig $DOTFILES_DIR/configs/gitconfig
 
 # VSCode
-mkdir -p $DOTFILES_DIR/vscode-settings
-cp -r ~/Library/Application\ Support/Code/User/* $DOTFILES_DIR/vscode-settings/
+mkdir -p $DOTFILES_DIR/configs/vscode-settings
+cp -r ~/Library/Application\ Support/Code/User/* $DOTFILES_DIR/configs/vscode-settings/
 
-echo "✅ Dotfiles synced!" 
+echo "✅ Dotfiles synced!"

@@ -1,54 +1,97 @@
 tap "aws/tap"
+tap "buckleypaul/mdsee"
+tap "marcus/tap"
 tap "oven-sh/bun"
 tap "romkatv/powerlevel10k"
 tap "runpod/runpodctl"
+tap "steipete/tap"
 tap "supabase/tap"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
-# Library for command-line editing
-brew "readline"
-# General-purpose data compression with high compression ratio
-brew "xz"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Static checker for GitHub Actions workflow files
+brew "actionlint"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
 # Plugin manager for zsh, inspired by oh-my-zsh and vundle
 brew "antigen"
+# Code searching, linting, rewriting
+brew "ast-grep"
 # CLI tool to build, test, debug, and deploy Serverless applications using AWS SAM
 brew "aws-sam-cli"
 # Official Amazon AWS command-line interface
 brew "awscli"
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
+# Memory upgrade for your coding agent
+brew "beads"
 # Get/set bluetooth power and discoverable state
 brew "blueutil"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
-# Play, record, convert, and stream audio and video
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
+# Command-line downloader for image-hosting site galleries and collections
+brew "gallery-dl"
 # GitHub command-line tool
 brew "gh"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Google Suite CLI
+brew "gogcli"
 # Client library for huggingface.co hub
-brew "huggingface-cli"
+brew "hf"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
 # Handy way to save and run project-specific commands
 brew "just"
+# Move files and folders to the trash
+brew "macos-trash"
 # Mac App Store command-line interface
 brew "mas"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
+# General-purpose lossless data-compression library
+brew "zlib"
+# Open source relational database management system
+brew "mysql", restart_service: :changed
 # Fast, highly customisable system info script
 brew "neofetch"
+# Port scanning utility for large networks
+brew "nmap"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node@22"
 # Manage multiple Node.js versions
 brew "nvm"
+# Development kit for the Java programming language
+brew "openjdk"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
 # Fast, disk space efficient package manager
 brew "pnpm"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
 # Object-relational database system
 brew "postgresql@14"
 # Theme for zsh
 brew "powerlevel10k"
 # Password generator
 brew "pwgen"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Autoformat shell script source code
+brew "shfmt"
 # Cross-shell prompt for astronauts
 brew "starship"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
+# Open source Firebase alternative
+brew "supabase"
+# Plugin and runtime library for using protobuf with Swift
+brew "swift-protobuf"
+# Tool to enforce Swift style and conventions
+brew "swiftlint"
 # Tool Command Language
 brew "tcl-tk@8"
 # Command-line interface for running and interacting with Temporal Server and UI
@@ -57,55 +100,154 @@ brew "temporal"
 brew "uv"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
-# General-purpose lossless data-compression library
-brew "zlib"
+# Generate your Xcode project from a spec file and your folder structure
+brew "xcodegen"
+# Find security issues in GitHub Actions setups
+brew "zizmor"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Fish shell like syntax highlighting for zsh
+brew "zsh-syntax-highlighting"
 # Copilot CLI - build, release and operate your container apps on AWS
 brew "aws/tap/copilot-cli"
+# Simple markdown file viewer for macOS with live reload
+brew "buckleypaul/mdsee/mdsee"
+# AI coding agent runner for overnight maintenance tasks
+brew "marcus/tap/nightshift"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
+# runpodctl is a CLI tool to manage your GPU pods on RunPod.
 brew "runpod/runpodctl/runpodctl"
-# Supabase CLI
-brew "supabase/tap/supabase"
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
+# Chromium based browser
+cask "arc"
+# Display management tool
+cask "betterdisplay"
 # Prevents your sleeping computer from connecting to Bluetooth accessories
 cask "bluesnooze"
+# Video editing and image design platform
+cask "capcut"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Terminal-based AI coding assistant
+cask "claude-code"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
+# Menu bar usage monitor for Codex and Claude
+cask "steipete/tap/codexbar"
+# Write, edit, and chat about your code with AI
+cask "cursor"
+# Client for the Dropbox cloud storage service
+cask "dropbox"
+# Collaborative team software
+cask "figma"
+# Screen colour temperature controller
+cask "flux-app"
+# Tool that helps teams design every part of the product experience
+cask "framer"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Web browser
+cask "google-chrome"
+# Grammarly for desktop
+cask "grammarly-desktop"
+# AI-powered notepad for meetings
+cask "granola"
+# Screen and video recording software
+cask "loom"
+# Open-source Markdown editor
+cask "macdown"
+# Command-line tools for Nordic nRF Semiconductors
+cask "nordic-nrf-command-line-tools"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# Get up and running with large language models locally
+cask "ollama-app"
 # Replacement for Docker Desktop
 cask "orbstack"
 # Administration and development platform for PostgreSQL
 cask "pgadmin4"
-# Plugin for AWS CLI to start and end sessions that connect to managed instances
-cask "session-manager-plugin"
+# Desktop agent for Postman on the Web
+cask "postman-agent"
+# Archive manager for data compression and backups
+cask "rar"
+# Control your tools with a few keystrokes
+cask "raycast"
+# Software and Documentation pack for Segger J-Link debug probes
+cask "segger-jlink"
+# Onion routing based messenger
+cask "session"
+# Music streaming service
+cask "spotify"
+# Open-source media center
+cask "stremio"
+# Text editor for code, markup and prose
+cask "sublime-text"
+# Native GUI tool for relational databases
+cask "tableplus"
+# Messaging app with a focus on speed and security
+cask "telegram"
+# Paste-once, run-once clipboard cleaner for terminal snippets
+cask "steipete/tap/trimmy"
+# Open-source code editor
+cask "visual-studio-code"
+# Multimedia player
+cask "vlc"
+# Rust-based terminal
+cask "warp"
+# Tool to run web apps like desktop apps
+cask "webcatalog"
+# Multiplayer code editor
+cask "zed"
+mas "Amphetamine", id: 937984704
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Intermission", id: 1439431081
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Tailscale", id: 1475387142
+mas "TestFlight", id: 899247664
+mas "Toggl Track", id: 1291898086
+mas "WeChat", id: 836500024
+mas "Xcode", id: 497799835
 vscode "1yib.svelte-bundle"
 vscode "aaron-bond.better-comments"
+vscode "anthropic.claude-code"
 vscode "ardenivanov.svelte-intellisense"
-vscode "augment.vscode-augment"
 vscode "austenc.tailwind-docs"
 vscode "batisteo.vscode-django"
 vscode "bradlc.vscode-tailwindcss"
 vscode "cardinal90.multi-cursor-case-preserve"
-vscode "chakrounanas.turbo-console-log"
 vscode "charliermarsh.ruff"
 vscode "christian-kohler.path-intellisense"
 vscode "connor4312.esbuild-problem-matchers"
 vscode "databricks.databricks"
 vscode "dbaeumer.vscode-eslint"
+vscode "donjayamanne.githistory"
 vscode "donjayamanne.python-environment-manager"
 vscode "donjayamanne.python-extension-pack"
 vscode "dunstontc.vscode-google-sheets-syntax"
-vscode "eamodio.gitlens"
 vscode "fivethree.vscode-svelte-snippets"
 vscode "formulahendry.auto-rename-tag"
+vscode "github.copilot-chat"
 vscode "github.vscode-github-actions"
 vscode "github.vscode-pull-request-github"
 vscode "gruntfuggly.todo-tree"
 vscode "kevinrose.vsc-python-indent"
 vscode "mechatroner.rainbow-csv"
 vscode "mikestead.dotenv"
-vscode "moalamri.inline-fold"
+vscode "ms-azure-load-testing.microsoft-testing"
 vscode "ms-azuretools.azure-dev"
+vscode "ms-azuretools.vscode-azure-github-copilot"
+vscode "ms-azuretools.vscode-azure-mcp-server"
 vscode "ms-azuretools.vscode-azureappservice"
 vscode "ms-azuretools.vscode-azurecontainerapps"
 vscode "ms-azuretools.vscode-azurefunctions"
@@ -113,6 +255,7 @@ vscode "ms-azuretools.vscode-azureresourcegroups"
 vscode "ms-azuretools.vscode-azurestaticwebapps"
 vscode "ms-azuretools.vscode-azurestorage"
 vscode "ms-azuretools.vscode-azurevirtualmachines"
+vscode "ms-azuretools.vscode-containers"
 vscode "ms-azuretools.vscode-cosmosdb"
 vscode "ms-azuretools.vscode-docker"
 vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
@@ -122,6 +265,7 @@ vscode "ms-python.flake8"
 vscode "ms-python.pylint"
 vscode "ms-python.python"
 vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
 vscode "ms-toolsai.datawrangler"
 vscode "ms-toolsai.jupyter"
 vscode "ms-toolsai.jupyter-keymap"
@@ -131,15 +275,18 @@ vscode "ms-toolsai.vscode-jupyter-slideshow"
 vscode "ms-vscode-remote.remote-containers"
 vscode "ms-vscode-remote.remote-ssh"
 vscode "ms-vscode-remote.remote-ssh-edit"
+vscode "ms-vscode.cpptools"
 vscode "ms-vscode.extension-test-runner"
 vscode "ms-vscode.remote-explorer"
 vscode "ms-vscode.vscode-node-azure-pack"
 vscode "ms-vsliveshare.vsliveshare"
+vscode "ms-windows-ai-studio.windows-ai-studio"
 vscode "njpwerner.autodocstring"
 vscode "openai.chatgpt"
 vscode "p1c2u.docker-compose"
 vscode "paiqo.databricks-vscode"
 vscode "pkief.material-icon-theme"
+vscode "platformio.platformio-ide"
 vscode "postman.postman-for-vscode"
 vscode "prisma.prisma"
 vscode "randomfractalsinc.vscode-data-table"
@@ -148,37 +295,15 @@ vscode "rooveterinaryinc.roo-cline"
 vscode "saketsarin.composer-web"
 vscode "shd101wyy.markdown-preview-enhanced"
 vscode "svelte.svelte-vscode"
-vscode "visualstudioexptteam.intellicode-api-usage-examples"
-vscode "visualstudioexptteam.vscodeintellicode"
+vscode "teamsdevapp.vscode-ai-foundry"
 vscode "wholroyd.jinja"
 vscode "wmaurer.change-case"
-cask "1password"
-cask "arc"
-cask "betterdisplay"
-cask "capcut"
-cask "chatgpt"
-cask "claude"
-cask "cursor"
-cask "dropbox"
-cask "figma"
-cask "flux-app"
-cask "framer"
-cask "google-chrome"
-cask "grammarly-desktop"
-cask "granola"
-cask "loom"
-cask "notion"
-cask "obsidian"
-cask "postman-agent"
-cask "raycast"
-cask "session"
-cask "spotify"
-cask "stremio"
-cask "sublime-text"
-cask "tableplus"
-cask "telegram"
-cask "visual-studio-code"
-cask "vlc"
-cask "warp"
-cask "webcatalog"
-cask "zed"
+cargo "cargo-careful"
+cargo "cargo-deny"
+cargo "prek"
+cargo "worktrunk"
+uv "adafruit-nrfutil"
+uv "meshtastic"
+uv "pip-audit"
+uv "ruff"
+uv "ty"
