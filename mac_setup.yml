@@ -17,17 +17,11 @@
       environment:
         HOMEBREW_NO_AUTO_UPDATE: 1
 
-    - name: Configure git user.name
-      command: git config --global user.name "eddydavies"
-
-    - name: Configure git user.email
-      command: git config --global user.email "eddy@fortick.io"
-
-    - name: Install Oh My Zsh
-      shell: |
-        if [ ! -d "$HOME/.oh-my-zsh" ]; then
-          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        fi
+    - name: Copy git config
+      copy:
+        src: "{{ dotfiles_dir }}/configs/gitconfig"
+        dest: "~/.gitconfig"
+        backup: yes
 
     - name: Copy Zsh config
       copy:
@@ -50,9 +44,31 @@
     - name: Restore Raycast configuration
       shell: |
         if [ -d "{{ dotfiles_dir }}/configs/raycast" ]; then
+          mkdir -p "$HOME/Library/Application Support/com.raycast.macos"
           rsync -av --exclude='*.log' --exclude='cache/' --exclude='tmp/' \
                 "{{ dotfiles_dir }}/configs/raycast/" \
-                "~/Library/Application Support/com.raycast.macos/"
+                "$HOME/Library/Application Support/com.raycast.macos/"
+        fi
+      ignore_errors: yes
+
+    - name: Ensure ~/.config/karabiner directory exists
+      file:
+        path: "~/.config/karabiner"
+        state: directory
+        mode: '0755'
+
+    - name: Restore Karabiner-Elements config
+      copy:
+        src: "{{ dotfiles_dir }}/configs/karabiner.json"
+        dest: "~/.config/karabiner/karabiner.json"
+        backup: yes
+
+    - name: Restore VSCode user settings
+      shell: |
+        if [ -d "{{ dotfiles_dir }}/configs/vscode-settings" ]; then
+          mkdir -p "$HOME/Library/Application Support/Code/User"
+          rsync -av "{{ dotfiles_dir }}/configs/vscode-settings/" \
+                "$HOME/Library/Application Support/Code/User/"
         fi
       ignore_errors: yes
 
@@ -65,17 +81,8 @@
         path: "~/Downloads/manual_apps"
         state: directory
 
-    - name: Download Microsoft Office
-      get_url:
-        url: "https://go.microsoft.com/fwlink/?linkid=525133"
-        dest: "~/Downloads/manual_apps/Microsoft_Office_installer.pkg"
-        mode: '0644'
-
-    - name: Download Zoom
-      get_url:
-        url: "https://zoom.us/client/latest/ZoomInstaller.pkg"
-        dest: "~/Downloads/manual_apps/ZoomInstaller.pkg"
-        mode: '0644'
+    # Microsoft Office, Zoom and ChatGPT are installed via Homebrew casks
+    # (see configs/Brewfile) — no manual download needed.
 
     - name: Download Pinokio
       get_url:
@@ -89,24 +96,13 @@
         dest: "~/Downloads/manual_apps/Willow.Installer.dmg"
         mode: '0644'
 
-    - name: Download ChatGPT
-      get_url:
-        url: "https://persistent.oaistatic.com/sidekick/public/ChatGPT_Desktop_public_latest.dmg"
-        dest: "~/Downloads/manual_apps/ChatGPT_Desktop_public_latest.dmg"
-        mode: '0644'
-
     - name: Display manual installation message
       debug:
         msg: |
           Downloaded apps are in ~/Downloads/manual_apps/
-          Please manually install:
-          - Microsoft Office (.pkg)
-          - Zoom (.pkg) 
-          - uTorrent Web (.dmg)
-          - Zen Browser (.dmg)
+          Please manually install (no Homebrew cask available):
           - Pinokio (.zip)
           - Willow (.dmg)
-          - ChatGPT (.dmg)
-          - folk (.dmg)
-          
-          See manual_install.txt for other apps that need manual installation.
+
+          Everything else (Office, Zoom, ChatGPT, Zen Browser, …) installs
+          via Homebrew casks — see configs/Brewfile.

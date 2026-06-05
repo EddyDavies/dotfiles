@@ -1,2 +1,5 @@
 .DS_Store
 .secrets
+# literal "~" dir created if a script forgets to expand $HOME
+/~/
+oh-my-zsh/

@@ -56,6 +56,96 @@
         /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
     ####################################################################
+    # APP SHORTCUTS (System Settings > Keyboard > App Shortcuts)
+    # Global menu-item rebinds stored in NSUserKeyEquivalents.
+    # Captured from live state; keep in sync via update_from_local/sync.sh.
+    # Modifier glyphs: @ = ⌘, ~ = ⌥, ^ = ⌃, $ = ⇧.
+    ####################################################################
+    - name: rebind global menu shortcuts (NSUserKeyEquivalents)
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: NSUserKeyEquivalents
+        type: dict
+        value:
+          "Enter Full Screen": "@~^$0"   # ⌘⌥⌃⇧0 — frees plain ⌘⏎/⌃⌘F
+          "Enter Fullscreen": "@~^$p"
+          "Fill": "@~^$l"
+          "Minimise": "@~$0"
+          "Minimize": "@~$0"
+          "Toggle Full Screen": "@~^$i"
+
+    ####################################################################
+    # KEYBOARD — fast key repeat
+    ####################################################################
+    - name: fast key repeat rate
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: KeyRepeat
+        type: int
+        value: 2
+
+    - name: short delay until repeat
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: InitialKeyRepeat
+        type: int
+        value: 15
+
+    ####################################################################
+    # TRACKPAD — tap to click
+    ####################################################################
+    - name: enable tap-to-click (NSGlobalDomain)
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: com.apple.mouse.tapBehavior
+        type: int
+        value: 1
+
+    - name: enable tap-to-click (built-in trackpad)
+      community.general.osx_defaults:
+        domain: com.apple.AppleMultitouchTrackpad
+        key: Clicking
+        type: bool
+        value: true
+
+    - name: enable tap-to-click (bluetooth trackpad)
+      community.general.osx_defaults:
+        domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+        key: Clicking
+        type: bool
+        value: true
+
+    ####################################################################
+    # FINDER — show all file extensions
+    ####################################################################
+    - name: show all file extensions
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: AppleShowAllExtensions
+        type: bool
+        value: true
+
+    ####################################################################
+    # SCREENSHOTS — save to ~/Downloads
+    ####################################################################
+    - name: ensure ~/Downloads exists for screenshots
+      ansible.builtin.file:
+        path: "{{ lookup('env','HOME') }}/Downloads"
+        state: directory
+        mode: "0755"
+
+    - name: save screenshots to ~/Downloads
+      community.general.osx_defaults:
+        domain: com.apple.screencapture
+        key: location
+        type: string
+        value: "{{ lookup('env','HOME') }}/Downloads"
+
+    - name: restart SystemUIServer so screenshot location takes effect
+      ansible.builtin.command: killall SystemUIServer
+      ignore_errors: true
+
+    ####################################################################
     # DOCK BEHAVIOUR
     ####################################################################
     - name: dock autohide
@@ -112,14 +202,23 @@
         executable: /bin/bash
 
     ####################################################################
-    # HOT CORNERS — disable all
+    # HOT CORNERS — disable all four (corner + modifier for each)
     ####################################################################
-    - name: disable bottom-right hot corner
+    - name: disable all hot corners
       community.general.osx_defaults:
         domain: com.apple.dock
-        key: wvous-br-corner
+        key: "{{ item }}"
         type: int
         value: 0
+      loop:
+        - wvous-tl-corner
+        - wvous-tl-modifier
+        - wvous-tr-corner
+        - wvous-tr-modifier
+        - wvous-bl-corner
+        - wvous-bl-modifier
+        - wvous-br-corner
+        - wvous-br-modifier
 
     ####################################################################
     # MISSION CONTROL — app exposé gesture

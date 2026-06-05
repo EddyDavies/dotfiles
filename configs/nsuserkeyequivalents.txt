@@ -1,0 +1,8 @@
+{
+    "Enter Full Screen" = "@~^$0";
+    "Enter Fullscreen" = "@~^$p";
+    Fill = "@~^$l";
+    Minimise = "@~$0";
+    Minimize = "@~$0";
+    "Toggle Full Screen" = "@~^$i";
+}
