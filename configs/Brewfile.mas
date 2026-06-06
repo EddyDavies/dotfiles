@@ -1,6 +1,10 @@
-# Apps requiring sign-in/password
+# Apps requiring sign-in/password.
+# Hand-maintained: `brew bundle dump` only writes Brewfile, so casks that
+# aren't always installed (Office, Zoom) live here to survive a sync.
 cask "google-drive"
+cask "microsoft-office"
 cask "nordvpn"
+cask "zoom"
 mas "Amphetamine", id: 937984704
 mas "Developer", id: 640199958
 mas "OneDrive", id: 823766827

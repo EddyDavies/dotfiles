@@ -17,6 +17,11 @@
       environment:
         HOMEBREW_NO_AUTO_UPDATE: 1
 
+    - name: Install hand-maintained sign-in apps (Office, Zoom, MAS apps)
+      shell: brew bundle --file={{ dotfiles_dir }}/configs/Brewfile.mas
+      environment:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+
     - name: Copy git config
       copy:
         src: "{{ dotfiles_dir }}/configs/gitconfig"
@@ -82,7 +87,8 @@
         state: directory
 
     # Microsoft Office, Zoom and ChatGPT are installed via Homebrew casks
-    # (see configs/Brewfile) — no manual download needed.
+    # (ChatGPT in Brewfile; Office + Zoom in Brewfile.mas) — no manual
+    # download needed.
 
     - name: Download Pinokio
       get_url:
@@ -105,4 +111,4 @@
           - Willow (.dmg)
 
           Everything else (Office, Zoom, ChatGPT, Zen Browser, …) installs
-          via Homebrew casks — see configs/Brewfile.
+          via Homebrew casks — see configs/Brewfile and Brewfile.mas.
